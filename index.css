@@ -1,0 +1,52 @@
+html, body {
+  margin: 0;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tt {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.tt *, .tt *:before, .tt *:after {
+  box-sizing: inherit;
+}
+
+.tt__slider {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.tt__slider.animate {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 200ms ease-out;
+}
+
+.tt__slide {
+  width: 100vw;
+  padding: 2em;
+  flex-shrink: 0
+}
+
+.tt__progress {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.tt__progress-bar {
+  width: 0;
+  background: black;
+  height: 5px;
+  transition: all 0.3s ease-out;
+}
