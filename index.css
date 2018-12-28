@@ -7,6 +7,7 @@ html, body {
 .tt {
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
 }
 
 .tt *, .tt *:before, .tt *:after {
@@ -36,12 +37,31 @@ html, body {
 }
 
 .tt__progress {
-  z-index: 1000;
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  z-index: 100;
   width: 100%;
+}
+
+.tt__progress ul {
+  list-style: none;
+  margin: 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.tt__progress li {
+  flex-grow: 1;
+  height: 3px;
+  margin-right: 5px;
+  background: rgba(255, 255, 255, .5);
+  border-radius: 5px;
+}
+
+.tt__progress li:nth-child(1) {
+  background: white;
 }
 
 .tt__progress-bar {

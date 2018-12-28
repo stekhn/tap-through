@@ -25,11 +25,11 @@
       height: 450px;
     }
 
-    .pink {
+    .tt__slide:nth-child(odd) {
       background: linear-gradient(to bottom, #d9a1fc 0%, #d6f9ff 100%);
     }
 
-    .yellow {
+    .tt__slide:nth-child(even) {
       background: linear-gradient(to bottom, #d6f9ff 0%, #f7ffa3 100%);
     }
   </style>
@@ -44,22 +44,30 @@
 </head>
 <body>
   <main id="demo" class="tt">
-    <header class="tt__progress">
+    <!-- <aside class="tt__progress">
       <div class="tt__progress-bar"></div>
-    </header>
+    </aside> -->
+
+    <aside class="tt__progress">
+      <ul class="tt_progress-wrapper">
+        <li class="tt__progress-segment"></li>
+        <li class="tt__progress-segment"></li>
+        <li class="tt__progress-segment"></li>
+      </ul>
+    </aside>
 
     <article class="tt__slider">
-      <section class="tt__slide pink">
+      <section class="tt__slide">
         <h1>Slide 1</h1>
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
       </section>
 
-      <section class="tt__slide yellow">
+      <section class="tt__slide">
         <h1>Slide 2</h1>
         <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.</p>
       </section>
 
-      <section class="tt__slide pink">
+      <section class="tt__slide">
         <h1>Slide 3</h1>
         <p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.</p>
       </section>
