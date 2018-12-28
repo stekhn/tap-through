@@ -1,0 +1,35 @@
+{
+  "name": "tap-through",
+  "version": "0.0.1",
+  "description": "Simple tap-through stories, inspired by Instagram",
+  "author": "Steffen Kühne",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c --environment BUILD:production",
+    "watch": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:stekhn/tap-through"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "autoprefixer": "^9.4.3",
+    "babel-eslint": "^10.0.1",
+    "babelrc-rollup": "^3.0.0",
+    "cssnano": "^4.1.8",
+    "eslint": "^5.11.1",
+    "node-sass": "^4.11.0",
+    "rollup": "^0.68.2",
+    "rollup-plugin-babel": "^4.1.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-postcss": "^1.6.3",
+    "rollup-plugin-uglify": "^6.0.0",
+    "rollup-watch": "^4.0.0"
+  }
+}
