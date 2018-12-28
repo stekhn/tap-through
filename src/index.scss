@@ -4,6 +4,10 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
+body {
+  background: red;
+}
+
 .tt {
   box-sizing: border-box;
   overflow: hidden;
@@ -53,20 +57,23 @@ html, body {
 }
 
 .tt__progress li {
+  position: relative;
   flex-grow: 1;
   height: 3px;
   margin-right: 5px;
-  background: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .5);
   border-radius: 5px;
 }
 
-.tt__progress li:nth-child(1) {
-  background: white;
-}
-
-.tt__progress-bar {
-  width: 0;
-  background: black;
-  height: 5px;
-  transition: all 0.3s ease-out;
+.tt__progress li.active:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transform-origin: left;
+  transition: width 0.25s ease;
+  z-index: -1;
 }
