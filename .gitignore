@@ -1,4 +1,7 @@
-### Node ###
+# Project
+dist
+
+# Node
 node_modules
 logs
 *.log
@@ -10,13 +13,13 @@ pids
 build/Release
 .lock-wscript
 
-### Windows ###
+# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
-### OSX ###
+# OSX
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -25,7 +28,7 @@ Icon
 .Spotlight-V100
 .Trashes
 
-### Project Files ###
+# Project Files
 .idea/
 .idea_modules/
 atlassian-ide-plugin.xml

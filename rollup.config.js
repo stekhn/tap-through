@@ -1,7 +1,7 @@
 import babel from 'rollup-plugin-babel';
 import babelrc from 'babelrc-rollup';
 import resolve from 'rollup-plugin-node-resolve';
-import uglify from 'rollup-plugin-uglify';
+import { uglify } from 'rollup-plugin-uglify';
 import sass from 'node-sass';
 import autoprefixer from 'autoprefixer';
 import postcss from 'rollup-plugin-postcss';
@@ -22,30 +22,29 @@ let plugins = [
     sourceMap: true,
     extensions: ['.scss'],
     preprocessor: sassPreprocessor, // Pre-process all imports with Sass
-    plugins: [autoprefixer(), cssnano()]
+    plugins: [
+      autoprefixer(),
+      cssnano()
+    ]
   }),
-  resolve({
-    jsnext: true,
-    main: true,
-    browser: true,
-    extensions: ['.js', '.json']
-  }),
+  resolve(),
   babel(
     babelrc({
       addExternalHelpersPlugin: false
     })
   ),
-  process.env.NODE_ENV === 'production' && uglify()
+  process.env.BUILD === 'production' && uglify()
 ];
 
-export default {
-  input: 'src/index.js',
-  output: {
-    file: 'dist/bundle.js',
-    format: 'iife',
-    name: 'TapThrough',
-    sourcemap: true
-  },
-  plugins: plugins,
-  external: external
-};
+export default [
+  {
+    input: 'src/index.js',
+    output: {
+      name: 'TapThrough',
+      file: 'dist/bundle.js',
+      format: 'iife'
+    },
+    plugins: plugins,
+    external: external
+  }
+];
