@@ -33,7 +33,7 @@ export default function init(config) {
   $container = document.querySelector('.tt__slider');
   $slides = document.querySelectorAll('.tt__slide');
   $progress = document.querySelector('.tt__progress-bar');
-  $anchors = document.querySelectorAll('.container a');
+  $anchors = document.querySelectorAll('.tt__slide a');
 
   slideCount = $slides.length;
   slideWidth = $container.getBoundingClientRect().width;
@@ -105,11 +105,11 @@ function start({ touches }) {
   // Get the original touch position.
   touchstartX = touches[0].pageX;
 
-  // The movement gets all janky if there's a transition on the elements.
-  const $animated = document.querySelector('.animate');
+  // Prevent jank if there's a transition on the elements.
+  const $animated = document.querySelector('.tt__slider--animate');
 
   if ($animated) {
-    $animated.classList.remove('animate');
+    $animated.classList.remove('tt__slider--animate');
   }
 }
 
@@ -177,7 +177,7 @@ function resize() {
 
 function apply() {
   // Slide elements into position
-  $container.classList.add('animate');
+  $container.classList.add('tt__slider--animate');
   $container.style[_config.transformPrefix] = `translateX(-${index * slideWidth}px)`;
   // $progress.style.width = `${(100 / slideCount) * (index + 1)}%`;
 }

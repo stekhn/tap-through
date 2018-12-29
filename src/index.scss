@@ -1,75 +1,70 @@
-html, body {
-  margin: 0;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
 .tt {
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
-}
+  -webkit-overflow-scrolling: touch;
 
-.tt *, .tt *:before, .tt *:after {
-  box-sizing: inherit;
-}
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
 
-.tt__slider {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  height: 100%;
-}
+  &__slider {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    height: 100%;
 
-.tt__slider.animate {
-  touch-action: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 200ms ease-out;
-}
+    &--animate {
+      touch-action: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 200ms ease-out;
+    }
+  }
 
-.tt__slide {
-  width: 100vw;
-  padding: 2em;
-  flex-shrink: 0
-}
+  &__slide {
+    width: 100vw;
+    padding: 2em;
+    flex-shrink: 0
+  }
 
-.tt__progress {
-  position: absolute;
-  top: 0;
-  z-index: 100;
-  width: 100%;
-}
+  &__progress {
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    width: 100%;
 
-.tt__progress ul {
-  list-style: none;
-  margin: 10px;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+    ul {
+      list-style: none;
+      margin: 10px;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
 
-.tt__progress li {
-  position: relative;
-  flex-grow: 1;
-  height: 3px;
-  margin-right: 5px;
-  background-color: rgba(255, 255, 255, .5);
-  border-radius: 5px;
-}
+    li {
+      position: relative;
+      flex-grow: 1;
+      height: 3px;
+      margin-right: 5px;
+      background-color: rgba(255, 255, 255, .5);
+      border-radius: 5px;
 
-.tt__progress li.active:after {
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  transform-origin: left;
-  transition: width 0.25s ease;
-  z-index: -1;
+      &.active:after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        transform-origin: left;
+        transition: width 0.25s ease;
+        z-index: -1;
+      }
+    }
+  }
 }

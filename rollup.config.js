@@ -21,7 +21,7 @@ let plugins = [
     extract: true,
     sourceMap: true,
     extensions: ['.scss'],
-    preprocessor: sassPreprocessor, // Pre-process all imports with Sass
+    preprocessor: sassPreprocessor,
     plugins: [
       autoprefixer(),
       cssnano()
