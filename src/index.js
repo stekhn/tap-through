@@ -8,7 +8,7 @@ let _config = {
   transformPrefix: 'transform'
 };
 
-let $container;
+let $slider;
 let $slides;
 let $progress;
 let $anchors;
@@ -30,13 +30,13 @@ export default function init(config) {
   _config = Object.assign(_config, config || {});
   _config.transformPrefix = getTransformPrefix();
 
-  $container = document.querySelector('.tt__slider');
+  $slider = document.querySelector('.tt__slider');
   $slides = document.querySelectorAll('.tt__slide');
-  $progress = document.querySelector('.tt__progress-bar');
   $anchors = document.querySelectorAll('.tt__slide a');
+  $progress = document.querySelector('.tt__progress-wrapper');
 
   slideCount = $slides.length;
-  slideWidth = $container.getBoundingClientRect().width;
+  slideWidth = $slider.getBoundingClientRect().width;
   containerWidth = slideWidth * slideCount;
 
   isPassiveSupported = getPassiveSupport();
@@ -45,18 +45,18 @@ export default function init(config) {
 }
 
 function bind() {
-  $container.addEventListener('click', click, false);
-  $container.addEventListener(
+  $slider.addEventListener('click', click, false);
+  $slider.addEventListener(
     'touchstart',
     start,
     isPassiveSupported ? { passive: false } : false
   );
-  $container.addEventListener(
+  $slider.addEventListener(
     'touchmove',
     move,
     isPassiveSupported ? { passive: false } : false
   );
-  $container.addEventListener(
+  $slider.addEventListener(
     'touchend',
     end,
     isPassiveSupported ? { passive: false } : false
@@ -71,18 +71,18 @@ function bind() {
 }
 
 function unbind() {
-  $container.removeEventListener('click', click, false);
-  $container.removeEventListener(
+  $slider.removeEventListener('click', click, false);
+  $slider.removeEventListener(
     'touchstart',
     start,
     isPassiveSupported ? { passive: false } : false
   );
-  $container.removeEventListener(
+  $slider.removeEventListener(
     'touchmove',
     move,
     isPassiveSupported ? { passive: false } : false
   );
-  $container.removeEventListener(
+  $slider.removeEventListener(
     'touchend',
     end,
     isPassiveSupported ? { passive: false } : false
@@ -99,7 +99,7 @@ function start({ touches }) {
   longTouch = false;
 
   setTimeout(() => {
-    $container.longTouch = true;
+    $slider.longTouch = true;
   }, 250);
 
   // Get the original touch position.
@@ -121,7 +121,7 @@ function move({ touches }) {
 
   // Makes the container stop moving when there is no more content.
   if (offsetX < containerWidth) {
-    $container.style[_config.transformPrefix] = `translateX(-${offsetX}px)`;
+    $slider.style[_config.transformPrefix] = `translateX(-${offsetX}px)`;
   }
 }
 
@@ -168,7 +168,7 @@ function resize() {
 
   // Update viewports and slide size
   slideCount = $slides.length;
-  slideWidth = $container.getBoundingClientRect().width;
+  slideWidth = $slider.getBoundingClientRect().width;
   containerWidth = slideWidth * slideCount;
 
   // Force redraw with new sizes
@@ -177,9 +177,18 @@ function resize() {
 
 function apply() {
   // Slide elements into position
-  $container.classList.add('tt__slider--animate');
-  $container.style[_config.transformPrefix] = `translateX(-${index * slideWidth}px)`;
-  // $progress.style.width = `${(100 / slideCount) * (index + 1)}%`;
+  $slider.classList.add('tt__slider--animate');
+  $slider.style[_config.transformPrefix] = `translateX(-${index * slideWidth}px)`;
+
+  const $segments = $progress.querySelectorAll('li');
+
+  for (let i = 0; i < $segments.length; i++) {
+    if (i <= index) {
+      $segments[i].classList.add('tt__progress-segment--active');
+    } else {
+      $segments[i].classList.remove('tt__progress-segment--active');
+    }
+  }
 }
 
 function stopProp(event) {
