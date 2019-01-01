@@ -3,41 +3,24 @@
 
 import './index.scss';
 
-console.log(this);
-
-let _config = {
+let config = {
   ratio: 0.33
 };
 
-let _instance = {};
-
-let $container;
-let $slider;
-let $slides;
-let $progress;
-let $anchors;
-
-let slideCount;
-let slideWidth;
-let containerWidth;
-
-let touchstartX;
-let touchmoveX;
-let offsetX;
-let previousOffsetX;
-let longTouch;
+let $container, $slider, $slides, $progress, $anchors;
+let slideCount, slideWidth, containerWidth;
+let touchstartX, touchmoveX, offsetX, previousOffsetX, longTouch;
+let debounceTimeout;
 
 let transformPrefix = 'transform';
 let isPassiveSupported = false;
 let isRegistered = false;
-
 let index = 0;
 
-function init(config) {
+export default function init(_config) {
+  config = Object.assign(_config, config || {});
 
-  _config = Object.assign(_config, config || {});
-
-  $container = document.querySelector(_config.id);
+  $container = document.getElementById(config.id);
   $slider = $container.querySelector('.tt__slider');
   $slides = $container.querySelectorAll('.tt__slide');
   $anchors = $container.querySelectorAll('.tt__slide a');
@@ -55,6 +38,8 @@ function init(config) {
 }
 
 function bind() {
+  window.addEventListener('resize', debouncedResize, false);
+
   $slider.addEventListener('click', click, false);
   $slider.addEventListener(
     'touchstart',
@@ -81,6 +66,8 @@ function bind() {
 }
 
 function unbind() {
+  window.removeEventListener('resize', debouncedResize, false);
+
   $slider.removeEventListener('click', click, false);
   $slider.removeEventListener(
     'touchstart',
@@ -159,10 +146,10 @@ function touchend() {
 
 function click({ clientX }) {
   // Handle ordinary click events and slide left or ...
-  if (clientX >= slideWidth * _config.ratio && index < slideCount - 1) {
+  if (clientX >= slideWidth * config.ratio && index < slideCount - 1) {
     index++;
     // ... slide right
-  } else if (clientX < slideWidth * _config.ratio && index > 0) {
+  } else if (clientX < slideWidth * config.ratio && index > 0) {
     index--;
   }
 
@@ -183,6 +170,13 @@ function resize() {
 
   // Force redraw with new sizes
   apply();
+}
+
+function debouncedResize() {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(function() {
+    resize();
+  }, 200);
 }
 
 function apply() {
@@ -243,11 +237,20 @@ function getPassiveSupport() {
 }
 
 function createProgressBar($container) {
-  const $progress = createElement('aside', $container, ['className', 'tt__progress']);
-  const $progressWrapper = createElement('ul', $progress, ['className', 'tt__progress-wrapper']);
+  const $progress = createElement('aside', $container, [
+    'className',
+    'tt__progress'
+  ]);
+  const $progressWrapper = createElement('ul', $progress, [
+    'className',
+    'tt__progress-wrapper'
+  ]);
 
   for (let i = 0; i < slideCount; i++) {
-    createElement('li', $progressWrapper, ['className', 'tt__progress-segment']);
+    createElement('li', $progressWrapper, [
+      'className',
+      'tt__progress-segment'
+    ]);
   }
 
   return $progress;
