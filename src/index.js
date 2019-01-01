@@ -8,6 +8,7 @@ let _config = {
   transformPrefix: 'transform'
 };
 
+let $container;
 let $slider;
 let $slides;
 let $progress;
@@ -30,14 +31,16 @@ export default function init(config) {
   _config = Object.assign(_config, config || {});
   _config.transformPrefix = getTransformPrefix();
 
-  $slider = document.querySelector('.tt__slider');
-  $slides = document.querySelectorAll('.tt__slide');
-  $anchors = document.querySelectorAll('.tt__slide a');
-  $progress = document.querySelector('.tt__progress-wrapper');
+  $container = document.querySelector('#demo');
+  $slider = $container.querySelector('.tt__slider');
+  $slides = $container.querySelectorAll('.tt__slide');
+  $anchors = $container.querySelectorAll('.tt__slide a');
 
   slideCount = $slides.length;
   slideWidth = $slider.getBoundingClientRect().width;
   containerWidth = slideWidth * slideCount;
+
+  $progress = createProgressBar($container);
 
   isPassiveSupported = getPassiveSupport();
 
@@ -48,17 +51,17 @@ function bind() {
   $slider.addEventListener('click', click, false);
   $slider.addEventListener(
     'touchstart',
-    start,
+    touchstart,
     isPassiveSupported ? { passive: false } : false
   );
   $slider.addEventListener(
     'touchmove',
-    move,
+    touchmove,
     isPassiveSupported ? { passive: false } : false
   );
   $slider.addEventListener(
     'touchend',
-    end,
+    touchend,
     isPassiveSupported ? { passive: false } : false
   );
 
@@ -74,17 +77,17 @@ function unbind() {
   $slider.removeEventListener('click', click, false);
   $slider.removeEventListener(
     'touchstart',
-    start,
+    touchstart,
     isPassiveSupported ? { passive: false } : false
   );
   $slider.removeEventListener(
     'touchmove',
-    move,
+    touchmove,
     isPassiveSupported ? { passive: false } : false
   );
   $slider.removeEventListener(
     'touchend',
-    end,
+    touchend,
     isPassiveSupported ? { passive: false } : false
   );
 
@@ -95,7 +98,7 @@ function unbind() {
   isRegistered = false;
 }
 
-function start({ touches }) {
+function touchstart({ touches }) {
   longTouch = false;
 
   setTimeout(() => {
@@ -113,7 +116,7 @@ function start({ touches }) {
   }
 }
 
-function move({ touches }) {
+function touchmove({ touches }) {
   // Continuously return touch position.
   touchmoveX = touches[0].pageX;
   // Calculate distance to translate container.
@@ -125,7 +128,7 @@ function move({ touches }) {
   }
 }
 
-function end() {
+function touchend() {
   // Calculate the distance swiped.
   const deltaX = Math.abs(index * slideWidth - offsetX);
 
@@ -231,3 +234,44 @@ function getPassiveSupport() {
 
   return isSupported;
 }
+
+function createProgressBar($container) {
+  const $progress = createElement('aside', $container, ['className', 'tt__progress']);
+  const $progressWrapper = createElement('ul', $progress, ['className', 'tt__progress-wrapper']);
+
+  for (let i = 0; i < slideCount; i++) {
+    createElement('li', $progressWrapper, ['className', 'tt__progress-segment']);
+  }
+
+  return $progress;
+}
+
+function createElement(type, parent) {
+  const element = document.createElement(type);
+
+  for (let i = 2; i < arguments.length; i++) {
+    // Check if object is an array
+    if (Object.prototype.toString.call(arguments[i]) === '[object Array]') {
+      element[arguments[i][0]] = arguments[i][1];
+    }
+  }
+
+  if (parent && isElement(parent)) {
+    parent.appendChild(element);
+
+    return element;
+  } else {
+    return element;
+  }
+}
+
+function isElement(element) {
+  return typeof HTMLElement === 'object'
+    ? element instanceof HTMLElement
+    : element &&
+        typeof element === 'object' &&
+        element !== null &&
+        element.nodeType === 1 &&
+        typeof element.nodeName === 'string';
+}
+
