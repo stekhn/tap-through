@@ -3,35 +3,41 @@
 
 import './index.scss';
 
+console.log(this);
+
 let _config = {
-  ratio: 0.33,
-  transformPrefix: 'transform'
+  ratio: 0.33
 };
+
+let _instance = {};
 
 let $container;
 let $slider;
 let $slides;
 let $progress;
 let $anchors;
+
 let slideCount;
 let slideWidth;
 let containerWidth;
+
 let touchstartX;
 let touchmoveX;
 let offsetX;
 let previousOffsetX;
 let longTouch;
 
+let transformPrefix = 'transform';
 let isPassiveSupported = false;
 let isRegistered = false;
 
 let index = 0;
 
-export default function init(config) {
-  _config = Object.assign(_config, config || {});
-  _config.transformPrefix = getTransformPrefix();
+function init(config) {
 
-  $container = document.querySelector('#demo');
+  _config = Object.assign(_config, config || {});
+
+  $container = document.querySelector(_config.id);
   $slider = $container.querySelector('.tt__slider');
   $slides = $container.querySelectorAll('.tt__slide');
   $anchors = $container.querySelectorAll('.tt__slide a');
@@ -42,6 +48,7 @@ export default function init(config) {
 
   $progress = createProgressBar($container);
 
+  transformPrefix = getTransformPrefix();
   isPassiveSupported = getPassiveSupport();
 
   resize();
@@ -124,7 +131,7 @@ function touchmove({ touches }) {
 
   // Makes the container stop moving when there is no more content.
   if (offsetX < containerWidth) {
-    $slider.style[_config.transformPrefix] = `translateX(-${offsetX}px)`;
+    $slider.style[transformPrefix] = `translateX(-${offsetX}px)`;
   }
 }
 
@@ -181,7 +188,7 @@ function resize() {
 function apply() {
   // Slide elements into position
   $slider.classList.add('tt__slider--animate');
-  $slider.style[_config.transformPrefix] = `translateX(-${index * slideWidth}px)`;
+  $slider.style[transformPrefix] = `translateX(-${index * slideWidth}px)`;
 
   const $segments = $progress.querySelectorAll('li');
 
@@ -246,32 +253,31 @@ function createProgressBar($container) {
   return $progress;
 }
 
-function createElement(type, parent) {
-  const element = document.createElement(type);
+function createElement(type, $parent) {
+  const $element = document.createElement(type);
 
   for (let i = 2; i < arguments.length; i++) {
     // Check if object is an array
     if (Object.prototype.toString.call(arguments[i]) === '[object Array]') {
-      element[arguments[i][0]] = arguments[i][1];
+      $element[arguments[i][0]] = arguments[i][1];
     }
   }
 
-  if (parent && isElement(parent)) {
-    parent.appendChild(element);
+  if ($parent && isElement($parent)) {
+    $parent.appendChild($element);
 
-    return element;
+    return $element;
   } else {
-    return element;
+    return $element;
   }
 }
 
-function isElement(element) {
+function isElement($element) {
   return typeof HTMLElement === 'object'
-    ? element instanceof HTMLElement
-    : element &&
-        typeof element === 'object' &&
-        element !== null &&
-        element.nodeType === 1 &&
-        typeof element.nodeName === 'string';
+    ? $element instanceof HTMLElement
+    : $element &&
+        typeof $element === 'object' &&
+        $element !== null &&
+        $element.nodeType === 1 &&
+        typeof $element.nodeName === 'string';
 }
-
