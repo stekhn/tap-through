@@ -27,5 +27,7 @@ npm run build
 ```
 
 # ToDo
-- Implement progress bar
-- Check browser compatibility for `Object.assign()`, `NodeList.forEach()`
+- Use CSS `scroll-snap` if supported
+- Export current context and necessary functions
+- Add custom event handlers `onChange()`
+- Check browser compatibility for `Object.assign()`, `NodeList.forEach()`, ...
