@@ -7,7 +7,7 @@ let config = {
   ratio: 0.33
 };
 
-let $container, $slider, $slides, $progress, $anchors;
+let $container, $slider, $slides, $progress, $hint, $anchors;
 let slideCount, slideWidth, containerWidth;
 let touchstartX, touchmoveX, offsetX, previousOffsetX, longTouch;
 let debounceTimeout;
@@ -30,6 +30,7 @@ export default function init(_config) {
   containerWidth = slideWidth * slideCount;
 
   $progress = createProgressBar($container);
+  $hint = createHint($container);
 
   transformPrefix = getTransformPrefix();
   isPassiveSupported = getPassiveSupport();
@@ -254,6 +255,39 @@ function createProgressBar($container) {
   }
 
   return $progress;
+}
+
+function createHint($container) {
+  const modes = ['back', 'next'];
+
+  const $hint = createElement('section', $container, [
+    'className',
+    'tt__hint'
+  ]);
+
+  modes.forEach(function (mode) {
+    const $hintContent = createElement('div', $hint, [
+      'className',
+      `tt__hint-content tt__hint-content--${mode}`
+    ]);
+
+    const $hintBlock = createElement('div', $hintContent, [
+      'className',
+      'tt__hint-block'
+    ]);
+
+    createElement('i', $hintBlock, [
+      'className',
+      `tt__arrow tt__arrow--${mode}`
+    ]);
+
+    createElement('span', $hintBlock, [
+      'textContent',
+      `Tap ${mode}`
+    ]);
+  });
+
+  return $hint;
 }
 
 function createElement(type, $parent) {
