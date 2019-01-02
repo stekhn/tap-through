@@ -33,7 +33,9 @@
   &__progress {
     position: absolute;
     top: 0;
-    z-index: 100;
+    left: 0;
+    right: 0;
+    z-index: 10;
     width: 100%;
 
     &-wrapper {
@@ -64,11 +66,74 @@
         background-color: white;
         transform-origin: left;
         transition: width .25s ease;
-        z-index: -1;
       }
 
       &--active:after {
         width: 100%;
+      }
+    }
+  }
+
+  &__hint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    background: rgba(0,0,0,.75);
+    color: white;
+
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &--back {
+        border-right: 2px dashed white;
+        width: calc(100% / 3 * 1);
+      }
+
+      &--next {
+        width: calc(100% / 3 * 2);
+      }
+    }
+
+    &-block {
+      display: block;
+      text-align: center;
+    }
+  }
+
+  &__arrow {
+    display: block;
+    line-height: 4em;
+
+    @mixin arrow() {
+      content: '';
+      vertical-align: middle;
+      border: solid white;
+      border-width: 0 .25em .25em 0;
+      display: inline-block;
+      padding: .75em;
+    }
+
+    &--back {
+      &:after {
+        @include arrow();
+        margin-right: -.75em;
+        transform: rotate(135deg);
+      }
+    }
+
+    &--next {
+      &:after {
+        @include arrow();
+        margin-left: -.75em;
+        transform: rotate(-45deg);
       }
     }
   }
