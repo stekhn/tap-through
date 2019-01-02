@@ -27,7 +27,11 @@ npm run build
 ```
 
 # ToDo
-- Use CSS `scroll-snap` if supported
-- Export current context and necessary functions
+- Prevent swiping further than the last slide
 - Add custom event handlers `onChange()`
+- Add share functionality
+- Add placeholder for fixed header
+- Add (background) video support
+- Export current context and necessary functions
 - Check browser compatibility for `Object.assign()`, `NodeList.forEach()`, ...
+- Use CSS `scroll-snap` if supported

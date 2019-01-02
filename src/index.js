@@ -87,6 +87,7 @@ function click({ clientX }) {
   apply();
 }
 
+// @todo Reduce flashes when user continues to scoll
 function scroll() {
   if (!isVisible) {
     $hint.classList.add('tt__hint--visible');
@@ -109,6 +110,7 @@ function touchstart({ touches }) {
   // Get the original touch position.
   touchstartX = touches[0].pageX;
 
+  // @todo Why use a querySelector here?
   // Prevent jank if there's a transition on the elements.
   const $animated = document.querySelector('.tt__slider--animate');
 
@@ -157,6 +159,8 @@ function resize() {
     bind();
   }
 
+  // @todo Disable animations during resize
+
   // Update viewports and slide size
   slideCount = $slides.length;
   slideWidth = $slider.getBoundingClientRect().width;
@@ -171,7 +175,7 @@ function debounce(func, delay = 100, context = this) {
   let funcArgs = null;
   const later = () => func.apply(context, funcArgs);
 
-  return function () {
+  return function() {
     if (window.requestAnimationFrame) {
       if (timeout) {
         window.cancelAnimationFrame(timeout);
@@ -263,10 +267,7 @@ function createProgressBar($container) {
 
 function createHint($container) {
   const modes = ['back', 'next'];
-  const $hint = createElement('section', $container, [
-    'className',
-    'tt__hint'
-  ]);
+  const $hint = createElement('section', $container, ['className', 'tt__hint']);
 
   modes.forEach(function(mode) {
     const $hintContent = createElement('div', $hint, [
