@@ -10,11 +10,11 @@ let config = {
 let $container, $slider, $slides, $progress, $hint, $anchors;
 let slideCount, slideWidth, containerWidth;
 let touchstartX, touchmoveX, offsetX, previousOffsetX, longTouch;
-let debounceTimeout;
 
 let transformPrefix = 'transform';
 let isPassiveSupported = false;
 let isRegistered = false;
+let isVisible = false;
 let index = 0;
 
 export default function init(_config) {
@@ -39,9 +39,17 @@ export default function init(_config) {
 }
 
 function bind() {
+  const debouncedResize = debounce(resize);
+  const debouncedScoll = debounce(scroll);
+
   window.addEventListener('resize', debouncedResize, false);
 
   $slider.addEventListener('click', click, false);
+  $slider.addEventListener(
+    'mousewheel',
+    debouncedScoll,
+    isPassiveSupported ? { passive: false } : false
+  );
   $slider.addEventListener(
     'touchstart',
     touchstart,
@@ -66,31 +74,29 @@ function bind() {
   isRegistered = true;
 }
 
-function unbind() {
-  window.removeEventListener('resize', debouncedResize, false);
-
-  $slider.removeEventListener('click', click, false);
-  $slider.removeEventListener(
-    'touchstart',
-    touchstart,
-    isPassiveSupported ? { passive: false } : false
-  );
-  $slider.removeEventListener(
-    'touchmove',
-    touchmove,
-    isPassiveSupported ? { passive: false } : false
-  );
-  $slider.removeEventListener(
-    'touchend',
-    touchend,
-    isPassiveSupported ? { passive: false } : false
-  );
-
-  for (let i = 0; i < $anchors.length; i++) {
-    $anchors[i].removeEventListener('click', stopProp, false);
+function click({ clientX }) {
+  // Handle ordinary click events and slide left or ...
+  if (clientX >= slideWidth * config.ratio && index < slideCount - 1) {
+    index++;
+    // ... slide right
+  } else if (clientX < slideWidth * config.ratio && index > 0) {
+    index--;
   }
 
-  isRegistered = false;
+  // Force redraw with new index
+  apply();
+}
+
+function scroll() {
+  if (!isVisible) {
+    $hint.classList.add('tt__hint--visible');
+    isVisible == true;
+
+    setTimeout(() => {
+      $hint.classList.remove('tt__hint--visible');
+      isVisible == false;
+    }, 2000);
+  }
 }
 
 function touchstart({ touches }) {
@@ -145,19 +151,6 @@ function touchend() {
   previousOffsetX = offsetX;
 }
 
-function click({ clientX }) {
-  // Handle ordinary click events and slide left or ...
-  if (clientX >= slideWidth * config.ratio && index < slideCount - 1) {
-    index++;
-    // ... slide right
-  } else if (clientX < slideWidth * config.ratio && index > 0) {
-    index--;
-  }
-
-  // Force redraw with new index
-  apply();
-}
-
 function resize() {
   // Add event listeners
   if (!isRegistered) {
@@ -173,11 +166,22 @@ function resize() {
   apply();
 }
 
-function debouncedResize() {
-  clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(function() {
-    resize();
-  }, 200);
+function debounce(func, delay = 100, context = this) {
+  let timeout;
+  let funcArgs = null;
+  const later = () => func.apply(context, funcArgs);
+
+  return function () {
+    if (window.requestAnimationFrame) {
+      if (timeout) {
+        window.cancelAnimationFrame(timeout);
+      }
+      timeout = window.requestAnimationFrame(later);
+    } else {
+      clearTimeout(timeout);
+      timeout = setTimeout(later, delay);
+    }
+  };
 }
 
 function apply() {
@@ -259,32 +263,25 @@ function createProgressBar($container) {
 
 function createHint($container) {
   const modes = ['back', 'next'];
-
   const $hint = createElement('section', $container, [
     'className',
     'tt__hint'
   ]);
 
-  modes.forEach(function (mode) {
+  modes.forEach(function(mode) {
     const $hintContent = createElement('div', $hint, [
       'className',
       `tt__hint-content tt__hint-content--${mode}`
     ]);
-
     const $hintBlock = createElement('div', $hintContent, [
       'className',
       'tt__hint-block'
     ]);
-
     createElement('i', $hintBlock, [
       'className',
       `tt__arrow tt__arrow--${mode}`
     ]);
-
-    createElement('span', $hintBlock, [
-      'textContent',
-      `Tap ${mode}`
-    ]);
+    createElement('span', $hintBlock, ['textContent', `Tap ${mode}`]);
   });
 
   return $hint;
