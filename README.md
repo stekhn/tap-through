@@ -35,3 +35,4 @@ npm run build
 - Export current context and necessary functions
 - Check browser compatibility for `Object.assign()`, `NodeList.forEach()`, ...
 - Use CSS `scroll-snap` if supported
+- Update documentation
