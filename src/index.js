@@ -9,7 +9,10 @@ let config = {
 
 let $container, $slider, $slides, $progress, $hint, $anchors;
 let slideCount, slideWidth, containerWidth;
-let touchstartX, touchmoveX, offsetX, previousOffsetX, longTouch;
+let offsetX, previousOffsetX;
+let touchstartX, touchmoveX;
+let touchstartY, touchmoveY;
+let longTouch;
 
 let transformPrefix = 'transform';
 let isPassiveSupported = false;
@@ -87,15 +90,12 @@ function click({ clientX }) {
   apply();
 }
 
-// @todo Reduce flashes when user continues to scoll
 function scroll() {
-  if (!isVisible) {
+  if (!$hint.classList.contains('tt__hint--visible')) {
     $hint.classList.add('tt__hint--visible');
-    isVisible == true;
 
     setTimeout(() => {
       $hint.classList.remove('tt__hint--visible');
-      isVisible == false;
     }, 2000);
   }
 }
@@ -109,6 +109,7 @@ function touchstart({ touches }) {
 
   // Get the original touch position.
   touchstartX = touches[0].pageX;
+  touchstartY = touches[0].clientY;
 
   // @todo Why use a querySelector here?
   // Prevent jank if there's a transition on the elements.
@@ -122,11 +123,13 @@ function touchstart({ touches }) {
 function touchmove({ touches }) {
   // Continuously return touch position.
   touchmoveX = touches[0].pageX;
+  touchmoveY = touches[0].pageY;
+
   // Calculate distance to translate container.
   offsetX = index * slideWidth + (touchstartX - touchmoveX);
 
   // Makes the container stop moving when there is no more content.
-  if (offsetX < containerWidth) {
+  if (offsetX < containerWidth - slideWidth) {
     $slider.style[transformPrefix] = `translateX(-${offsetX}px)`;
   }
 }
@@ -134,6 +137,11 @@ function touchmove({ touches }) {
 function touchend() {
   // Calculate the distance swiped.
   const deltaX = Math.abs(index * slideWidth - offsetX);
+
+  // Show hint if user tries to scroll down
+  if (touchstartY > touchmoveY + 80) {
+    scroll();
+  }
 
   // Only slide if the actual slide position has changed.
   if (previousOffsetX !== offsetX) {
@@ -234,7 +242,7 @@ function getPassiveSupport() {
       null,
       Object.defineProperty({}, 'passive', {
         get() {
-          isSupported = true;
+          return isSupported = true;
         }
       })
     );

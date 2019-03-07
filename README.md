@@ -27,7 +27,6 @@ npm run build
 ```
 
 # ToDo
-- Prevent swiping further than the last slide
 - Add custom event handlers `onChange()`
 - Add share functionality
 - Add placeholder for fixed header
