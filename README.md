@@ -17,7 +17,7 @@ npm install
 Develop and continuously build scripts and stylesheets
 
 ```
-npm run watch
+npm start
 ```
 
 Build for production

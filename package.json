@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
-    "watch": "rollup -c -w"
+    "start": "rollup -c -w"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "rollup-plugin-babel": "^4.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-postcss": "^1.6.3",
+    "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.0",
     "rollup-watch": "^4.0.0"
   }
