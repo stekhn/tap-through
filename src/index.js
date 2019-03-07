@@ -4,7 +4,13 @@
 import './index.scss';
 
 let config = {
-  ratio: 0.33
+  ratio: 0.33,
+  scrollDistance: 80,
+  hintDuration: 2000,
+  hintText: {
+    back: 'Tap back',
+    next: 'Tap next'
+  }
 };
 
 let $container, $slider, $slides, $progress, $hint, $anchors;
@@ -17,7 +23,6 @@ let longTouch;
 let transformPrefix = 'transform';
 let isPassiveSupported = false;
 let isRegistered = false;
-let isVisible = false;
 let index = 0;
 
 export default function init(_config) {
@@ -96,7 +101,7 @@ function scroll() {
 
     setTimeout(() => {
       $hint.classList.remove('tt__hint--visible');
-    }, 2000);
+    }, config.hintDuration);
   }
 }
 
@@ -139,7 +144,7 @@ function touchend() {
   const deltaX = Math.abs(index * slideWidth - offsetX);
 
   // Show hint if user tries to scroll down
-  if (touchstartY > touchmoveY + 80) {
+  if (touchstartY > touchmoveY + config.scrollDistance) {
     scroll();
   }
 
@@ -290,7 +295,7 @@ function createHint($container) {
       'className',
       `tt__arrow tt__arrow--${mode}`
     ]);
-    createElement('span', $hintBlock, ['textContent', `Tap ${mode}`]);
+    createElement('span', $hintBlock, ['textContent', config.hintText[mode]]);
   });
 
   return $hint;
