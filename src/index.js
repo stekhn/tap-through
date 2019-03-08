@@ -1,6 +1,3 @@
-// Basic responsive touch-enabled container using CSS transforms
-// Core idea: https://css-tricks.com/the-javascript-behind-touch-friendly-containers/
-
 import './index.scss';
 
 let config = {
