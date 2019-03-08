@@ -4,6 +4,8 @@
   "description": "Simple tap-through stories, inspired by Instagram",
   "author": "Steffen Kühne",
   "license": "MIT",
+  "main": "dist/tap-through.js",
+  "module": "dist/tap-through.esm.js",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "start": "rollup -c -w"
@@ -24,13 +26,13 @@
     "babelrc-rollup": "^3.0.0",
     "cssnano": "^4.1.8",
     "eslint": "^5.11.1",
-    "node-sass": "^4.11.0",
+    "postcss": "^7.0.14",
     "rollup": "^0.68.2",
     "rollup-plugin-babel": "^4.1.0",
+    "rollup-plugin-cleaner": "^0.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-postcss": "^1.6.3",
+    "rollup-plugin-sass": "^1.1.0",
     "rollup-plugin-serve": "^1.0.1",
-    "rollup-plugin-uglify": "^6.0.0",
-    "rollup-watch": "^4.0.0"
+    "rollup-plugin-uglify": "^6.0.0"
   }
 }

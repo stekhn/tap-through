@@ -26,7 +26,10 @@ Build for production
 npm run build
 ```
 
-# ToDo
+## Similar projects
+- story-json: [Github](https://github.com/micnews/story-json), [Example](https://mic.com/stories/327/what-happens-in-your-brain-when-you-listen-to-music)
+
+## ToDo
 - Add custom event handlers `onChange()`
 - Add share functionality
 - Add placeholder for fixed header

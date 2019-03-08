@@ -1,29 +1,28 @@
-import babel from 'rollup-plugin-babel';
+import cleaner from 'rollup-plugin-cleaner';
 import babelrc from 'babelrc-rollup';
+import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
-import sass from 'node-sass';
-import autoprefixer from 'autoprefixer';
-import postcss from 'rollup-plugin-postcss';
-import cssnano from 'cssnano';
 import { uglify } from 'rollup-plugin-uglify';
+import sass from 'rollup-plugin-sass';
+import postcss from 'postcss';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
 import serve from 'rollup-plugin-serve';
 
 const pkg = require('./package.json');
 const external = Object.keys(pkg.dependencies);
 
-const sassPreprocessor = (content, id) =>
-  new Promise(resolve => {
-    const result = sass.renderSync({ file: id });
-    resolve({ code: result.css.toString() });
-  });
-
 let plugins = [
-  postcss({
-    extract: true,
-    sourceMap: true,
-    extensions: ['.scss'],
-    preprocessor: sassPreprocessor,
-    plugins: [autoprefixer(), cssnano()]
+  cleaner({
+    silent: true,
+    targets: ['./dist/']
+  }),
+  sass({
+    output: true,
+    processor: css =>
+      postcss([autoprefixer, cssnano])
+        .process(css, { from: undefined, map: true })
+        .then(result => result.css)
   }),
   resolve(),
   babel(
@@ -51,7 +50,7 @@ export default [
     input: 'src/index.js',
     output: {
       name: 'TapThrough',
-      file: 'dist/bundle.js',
+      file: pkg.main,
       format: 'iife'
     },
     plugins: plugins,
