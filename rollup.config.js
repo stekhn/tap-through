@@ -2,8 +2,8 @@ import cleaner from 'rollup-plugin-cleaner';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import ignoreImport from 'rollup-plugin-ignore-import';
-import { terser } from "rollup-plugin-terser";
-import sass from 'rollup-plugin-sass';
+import { terser } from 'rollup-plugin-terser';
+import scss from 'rollup-plugin-scss';
 import postcss from 'postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
@@ -14,12 +14,9 @@ const external = Object.keys(pkg.dependencies);
 const ignoreImportOptions = {
   extensions: ['.scss', '.css']
 };
-const sassOptions = {
+const scssOptions = {
   output: true,
-  processor: css =>
-    postcss([autoprefixer, cssnano])
-      .process(css, { from: undefined, map: true })
-      .then(result => result.css)
+  processor: () => postcss([autoprefixer, cssnano])
 };
 const serveOptions = {
   open: true,
@@ -45,7 +42,7 @@ if (process.env.PRODUCTION) {
         silent: true,
         targets: ['./dist/']
       }),
-      sass(sassOptions),
+      scss(scssOptions),
       resolve(),
       babel(),
       terser()
@@ -89,7 +86,7 @@ if (process.env.PRODUCTION) {
         sourcemap: true
       }
     ],
-    plugins: [sass(sassOptions), resolve(), babel(), serve(serveOptions)],
+    plugins: [scss(scssOptions), resolve(), babel(), serve(serveOptions)],
     external: external
   });
 }
