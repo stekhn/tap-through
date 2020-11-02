@@ -2,7 +2,7 @@ import cleaner from 'rollup-plugin-cleaner';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import ignoreImport from 'rollup-plugin-ignore-import';
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from "rollup-plugin-terser";
 import sass from 'rollup-plugin-sass';
 import postcss from 'postcss';
 import autoprefixer from 'autoprefixer';
@@ -48,7 +48,7 @@ if (process.env.PRODUCTION) {
       sass(sassOptions),
       resolve(),
       babel(),
-      uglify()
+      terser()
     ],
     external: external
   });
